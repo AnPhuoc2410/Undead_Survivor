@@ -21,11 +21,12 @@ public class Repositon : MonoBehaviour
         switch (transform.tag)
         {
             case "Ground":
-            case "Enemy":
                 if (diffX > diffY)
                     transform.Translate(Vector3.right * dirX * moveDistance);
-                else
+                else if (diffX < diffY)
                     transform.Translate(Vector3.up * dirY * moveDistance);
+                break;
+            case "Enemy":
                 break;
         }
     }
