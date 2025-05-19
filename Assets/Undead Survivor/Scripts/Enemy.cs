@@ -31,5 +31,9 @@ public class Enemy : MonoBehaviour
     {
         spriter.flipX = target.position.x < rb.position.x;
     }
+    void OnEnable()
+    {
+        target = GameManager.instance.player.GetComponent<Rigidbody2D>();
+    }
 
 }
