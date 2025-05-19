@@ -3,7 +3,12 @@ using UnityEngine;
 public class Repositon : MonoBehaviour
 {
     public float moveDistance = 40f;
+    private Collider2D coll;
 
+    void Awake()
+    {
+        coll = GetComponent<Collider2D>();
+    }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.CompareTag("Area")) return;
@@ -27,6 +32,10 @@ public class Repositon : MonoBehaviour
                     transform.Translate(Vector3.up * dirY * moveDistance);
                 break;
             case "Enemy":
+                if (coll.enabled)
+                {
+                    transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f,3f), Random.Range(-3f, 3f), 0f));
+                }
                 break;
         }
     }

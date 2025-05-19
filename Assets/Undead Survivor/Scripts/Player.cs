@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
 
         // Flip sprite based on direction
         if (input.x != 0f)
-            spriteRenderer.flipX = input.x < 0;
+            spriteRenderer.flipX = input.x < 0; //true if moving left 
     }
 
     void FixedUpdate()
