@@ -24,9 +24,12 @@ public class Spawner : MonoBehaviour
     }
     void Spawn()
     {
-        GameObject enemy = GameManager.instance.poolManager.Get(Random.Range(0, level + 1));
+        GameObject enemy = GameManager.instance.poolManager.Get(0);
         enemy.transform.position = spawnPoints[Random.Range(1, spawnPoints.Length)].position; //Start from 1 cause the transform index 0 is the parent
-        enemy.GetComponent<Enemy>().Init(spawnDatas[level]);
+        
+        // Randomly select between the two spawn data configurations
+        int randomSpawnData = Random.Range(0, spawnDatas.Length);
+        enemy.GetComponent<Enemy>().Init(spawnDatas[randomSpawnData]);
     }
 }
 
