@@ -52,4 +52,26 @@ public class Enemy : MonoBehaviour
             animator.runtimeAnimatorController = animatorControllers[data.spriteType];
         }
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!other.CompareTag("Bullet")) return;
+
+        Bullet bullet = other.GetComponent<Bullet>();
+        health -= bullet.damage;
+        if (health > 0)
+        {
+
+        }
+        else
+        {
+            Dead();
+        }
+    }
+
+    void Dead()
+    {
+        isLive = false;
+        gameObject.SetActive(false);
+    }
 }
