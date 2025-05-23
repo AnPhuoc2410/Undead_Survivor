@@ -18,7 +18,7 @@ public class Weapon : MonoBehaviour
         switch (id)
         {
             case 0:
-                transform.Rotate(Vector3.forward * speed * Time.deltaTime);
+                transform.Rotate(speed * Time.deltaTime * Vector3.forward);
                 break;
             default:
                 break;
@@ -43,7 +43,15 @@ public class Weapon : MonoBehaviour
         for(int i = 0; i < count; i++)
         {
             Transform bullet = GameManager.instance.poolManager.Get(prefabId).transform;
+            bullet.localPosition = new Vector3(bullet.localPosition.x, bullet.localPosition.y, 0f);
             bullet.parent = transform;
+            Debug.Log(bullet.name);
+            Debug.Log(bullet.parent.name);
+
+            Vector3 rotateVec = 360 * i * Vector3.forward / count;
+            bullet.Rotate(rotateVec);
+            bullet.Translate(Vector3.up * 1.5f, Space.World);
+
             bullet.GetComponent<Bullet>().Init(damage, -1); //-1 is infinity
 
 
