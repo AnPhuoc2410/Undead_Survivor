@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -10,25 +11,28 @@ public class Enemy : MonoBehaviour
 
     bool isLive;
     private Rigidbody2D rb;
+    private Collider2D collider;
     private Animator animator;
     private SpriteRenderer spriter;
+    private WaitForFixedUpdate waitForFixed;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        collider = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         spriter = GetComponent<SpriteRenderer>();
+        waitForFixed = new();
     }
 
     void FixedUpdate()
     {
-        if (!isLive)
+        if (!isLive || animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
 
         Vector2 moveDirection = (target.position - rb.position).normalized;
         Vector2 desiredMovement = speed * Time.fixedDeltaTime * moveDirection;
         rb.MovePosition(rb.position + desiredMovement);
-
         rb.linearVelocity = Vector2.zero;
     }
 
@@ -53,20 +57,33 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!other.CompareTag("Bullet")) return;
+        if (!collision.CompareTag("Bullet")) return;
 
-        Bullet bullet = other.GetComponent<Bullet>();
+        Bullet bullet = collision.GetComponent<Bullet>();
         health -= bullet.damage;
+        StartCoroutine(KnockBack());
+
         if (health > 0)
         {
-
+            animator.SetTrigger("Hit");
         }
         else
         {
+            isLive = false;
+            collider.enabled = false;
+            rb.simulated = false;
             Dead();
         }
+    }
+
+    IEnumerator KnockBack()
+    {
+        yield return waitForFixed;
+        Vector3 playerPos = GameManager.instance.player.transform.position;
+        Vector3 dir = transform.position - playerPos;
+        rb.AddForce(dir.normalized * 5f, ForceMode2D.Impulse);
     }
 
     void Dead()
