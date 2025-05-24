@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Animator animator;
 
+    public Scanner scanner;
+
     public float pixelsPerUnit = 18f; // You can adjust this in the Inspector
     private float UnitsPerPixel => 1f / pixelsPerUnit;
 
@@ -18,6 +20,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        scanner = GetComponent<Scanner>();
     }
 
     void Update()

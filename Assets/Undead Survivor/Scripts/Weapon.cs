@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -9,6 +10,13 @@ public class Weapon : MonoBehaviour
     public int count;
     public float speed;
 
+    float timer;
+    Player player;
+
+    void Awake()
+    {
+        player = GetComponentInParent<Player>();
+    }
     void Start()
     {
         Init();
@@ -22,6 +30,13 @@ public class Weapon : MonoBehaviour
                 transform.Rotate(speed * Time.deltaTime * Vector3.back);
                 break;
             default:
+                timer += Time.deltaTime;
+
+                if (timer > speed)
+                {
+                    timer = 0f;
+                    Fire();
+                }
                 break;
         }
     }
@@ -39,12 +54,29 @@ public class Weapon : MonoBehaviour
         switch (id)
         {
             case 0:
-                speed = -150;
+                speed = 150;
                 Batch();
                 break;
             default:
+                speed = 0.3f;
                 break;
         }
+    }
+
+    private void Fire()
+    {
+        if (!player.scanner.nearestTarget) return;
+        Transform bullet;
+
+        Vector3 targerPos = player.scanner.nearestTarget.position;
+        Vector3 dir = (targerPos - transform.position).normalized;
+
+
+        bullet = GameManager.instance.poolManager.Get(prefabId).transform;
+        bullet.position = transform.position;
+        bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+        bullet.GetComponent<Bullet>().Init(damage, count, dir);
+
     }
 
     void Batch()
@@ -72,7 +104,7 @@ public class Weapon : MonoBehaviour
             bullet.Rotate(rotateVec);
             bullet.Translate(Vector3.up * 1.5f, Space.Self);
 
-            bullet.GetComponent<Bullet>().Init(damage, -1); //-1 is infinity
+            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero); //-1 is infinity
 
 
         }
