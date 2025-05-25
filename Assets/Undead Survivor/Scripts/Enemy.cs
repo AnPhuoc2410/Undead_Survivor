@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Bullet")) return;
+        if (!collision.CompareTag("Bullet") || !isLive) return;
 
         Bullet bullet = collision.GetComponent<Bullet>();
         health -= bullet.damage;
@@ -80,7 +80,8 @@ public class Enemy : MonoBehaviour
             rb.simulated = false;
             spriter.sortingOrder = 1;
             animator.SetBool("Dead", true);
-            //Dead();
+            GameManager.instance.kill++;
+            GameManager.instance.GetExp();
         }
     }
 
