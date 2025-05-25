@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
 
     bool isLive;
     private Rigidbody2D rb;
-    private Collider2D collider;
+    private Collider2D collid;
     private Animator animator;
     private SpriteRenderer spriter;
     private WaitForFixedUpdate waitForFixed;
@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        collider = GetComponent<Collider2D>();
+        collid = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
         spriter = GetComponent<SpriteRenderer>();
         waitForFixed = new();
@@ -44,6 +44,10 @@ public class Enemy : MonoBehaviour
     {
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();
         isLive = true;
+        collid.enabled = true;
+        rb.simulated = true;
+        spriter.sortingOrder = 2;
+        animator.SetBool("Dead", false);
         health = maxHealth;
     }
     public void Init(SpawnData data)
@@ -72,8 +76,10 @@ public class Enemy : MonoBehaviour
         else
         {
             isLive = false;
-            collider.enabled = false;
+            collid.enabled = false;
             rb.simulated = false;
+            spriter.sortingOrder = 1;
+            animator.SetBool("Dead", true);
             Dead();
         }
     }
