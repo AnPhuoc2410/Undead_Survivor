@@ -80,7 +80,7 @@ public class Enemy : MonoBehaviour
             rb.simulated = false;
             spriter.sortingOrder = 1;
             animator.SetBool("Dead", true);
-            Dead();
+            //Dead();
         }
     }
 
