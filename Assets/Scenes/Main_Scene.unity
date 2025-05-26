@@ -4821,7 +4821,7 @@ GameObject:
   - component: {fileID: 224506938}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5112,8 +5112,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameTime: 0
   gameTimeLimit: 20
+  level: 1
+  kill: 0
+  exp: 0
+  nextExp: 0a0000001e0000003c0000006400000096000000d20000001801000068010000c201000026020000
   player: {fileID: 224506931}
   poolManager: {fileID: 1718993004}
+  expOrbPrefabIndex: 2
 --- !u!4 &501967470
 Transform:
   m_ObjectHideFlags: 0
@@ -10217,6 +10222,7 @@ MonoBehaviour:
   - {fileID: 2225729376747095031, guid: be42131c53fc06145ad88dbe2168f228, type: 3}
   - {fileID: 5018409284244602309, guid: f2ef6f35bdb1ede438cca08d391fd203, type: 3}
   - {fileID: 7379674869804145599, guid: 120caaa835f3fda47ac3e08b83a29c51, type: 3}
+  - {fileID: 8437741209361930023, guid: 6d937d80a44417f49a8642eb96713502, type: 3}
 --- !u!4 &1718993005
 Transform:
   m_ObjectHideFlags: 0
