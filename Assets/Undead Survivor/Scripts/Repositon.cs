@@ -40,7 +40,7 @@ public class Repositon : MonoBehaviour
             case "ExpOrb":
                 if (coll.enabled)
                 {
-                    transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f,3f), Random.Range(-3f, 3f), 0f));
+                    transform.Translate(playerDir * 30 + new Vector3(Random.Range(-3f,3f), Random.Range(-3f, 3f), 0f));
                 }
                 break;
         }

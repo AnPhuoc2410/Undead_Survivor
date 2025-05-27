@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     public float gameTime;
     public float gameTimeLimit = 60f; // 1 minute
     [Header("Player Settings")]
+    public int health;
+    public int maxHealth = 100;
     public int level = 1;
     public int kill;
     public int exp;
@@ -20,6 +22,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        health = maxHealth;
     }
 
     void Update()
@@ -35,33 +38,33 @@ public class GameManager : MonoBehaviour
     {
         GetExp(1); // Default to 1 exp
     }
-    
+
     public void GetExp(int expAmount)
     {
         exp += expAmount;
 
-        if(exp >= nextExp[level - 1])
+        if (exp >= nextExp[level - 1])
         {
             level++;
             exp = 0;
             // Level up logic here, e.g., increase player stats
         }
     }
-    
+
     public void SpawnExpOrb(Vector3 position, int expValue = 1)
     {
-        
+
         GameObject prefabToSpawn = poolManager.prefabs[expOrbPrefabIndex];
-        
+
         GameObject expOrb = poolManager.Get(expOrbPrefabIndex);
         if (expOrb == null)
         {
             GetExp(expValue);
             return;
         }
-        
+
         expOrb.transform.position = position;
-        
+
         ExpOrb orbComponent = expOrb.GetComponent<ExpOrb>();
         orbComponent.expValue = expValue;
     }

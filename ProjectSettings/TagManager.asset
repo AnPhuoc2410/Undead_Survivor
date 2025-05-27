@@ -8,7 +8,7 @@ TagManager:
   - Area
   - Enemy
   - Bullet
-  - Exp
+  - ExpOrb
   layers:
   - Default
   - TransparentFX
