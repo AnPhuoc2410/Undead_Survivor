@@ -3,17 +3,20 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 5f; // Movement speed
-    public Vector2 input;
+    [Header("Movement Settings")]
+    public float speed = 5f;
+    public float pixelsPerUnit = 18f;
 
+    [Header("References")]
+    public Scanner scanner;
+
+    public Vector2 input;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
-
-    public Scanner scanner;
-
-    public float pixelsPerUnit = 18f; // You can adjust this in the Inspector
     private float UnitsPerPixel => 1f / pixelsPerUnit;
+
+    private Vector2 targetPosition;
 
     void Awake()
     {
@@ -21,29 +24,35 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
+
+        // Initialize target position
+        targetPosition = rb.position;
     }
 
     void Update()
     {
-        // Animate based on movement
         animator.SetFloat("Speed", input.magnitude);
 
-        // Flip sprite based on direction
         if (input.x != 0f)
-            spriteRenderer.flipX = input.x < 0; //true if moving left 
+            spriteRenderer.flipX = input.x < 0;
     }
 
     void FixedUpdate()
     {
-        Vector2 moveDirection = input.normalized;
-        Vector2 desiredMovement = speed * Time.fixedDeltaTime * moveDirection;
-        Vector2 newPos = rb.position + desiredMovement;
+        if (input.magnitude > 0f)
+        {
+            Vector2 moveDirection = input.normalized;
+            Vector2 desiredMovement = speed * Time.fixedDeltaTime * moveDirection;
+            targetPosition += desiredMovement;
 
-        // Snap to pixel grid
-        newPos.x = Mathf.Round(newPos.x / UnitsPerPixel) * UnitsPerPixel;
-        newPos.y = Mathf.Round(newPos.y / UnitsPerPixel) * UnitsPerPixel;
+            Vector2 snappedPosition;
+            snappedPosition.x = Mathf.Round(targetPosition.x / UnitsPerPixel) * UnitsPerPixel;
+            snappedPosition.y = Mathf.Round(targetPosition.y / UnitsPerPixel) * UnitsPerPixel;
 
-        rb.MovePosition(newPos);
+            rb.MovePosition(snappedPosition);
+
+            targetPosition = snappedPosition;
+        }
     }
 
     void OnMove(InputValue inputValue)
