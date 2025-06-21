@@ -4745,7 +4745,6 @@ MonoBehaviour:
   speed: 5
   input: {x: 0, y: 0}
   scanner: {fileID: 0}
-  pixelsPerUnit: 18
 --- !u!70 &77017586
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -5042,7 +5041,6 @@ MonoBehaviour:
   speed: 5
   input: {x: 0, y: 0}
   scanner: {fileID: 0}
-  pixelsPerUnit: 18
 --- !u!70 &224506932
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -5647,7 +5645,7 @@ MonoBehaviour:
   m_RefResolutionX: 320
   m_RefResolutionY: 180
   m_CropFrame: 0
-  m_GridSnapping: 0
+  m_GridSnapping: 1
   m_FilterMode: 0
   m_UpscaleRT: 0
   m_PixelSnapping: 0
@@ -10653,7 +10651,6 @@ GameObject:
   - component: {fileID: 1262518739}
   - component: {fileID: 1262518738}
   - component: {fileID: 1262518740}
-  - component: {fileID: 1262518741}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -10738,18 +10735,6 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 0, z: -10}
---- !u!114 &1262518741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1262518737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a8a05de0ac134f4f9d01bef6b9da077, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1267265602
 GameObject:
   m_ObjectHideFlags: 0

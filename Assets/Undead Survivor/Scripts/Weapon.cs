@@ -24,6 +24,8 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!GameManager.instance.isLive) return; // Check if the game is live
+
         switch (id)
         {
             case 0:

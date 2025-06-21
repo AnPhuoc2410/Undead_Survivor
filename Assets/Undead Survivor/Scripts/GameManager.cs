@@ -4,6 +4,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [Header("Game Settings")]
+    public bool isLive;
     public float gameTime;
     public float gameTimeLimit = 60f; // 1 minute
     [Header("Player Settings")]
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (!isLive) return; 
         gameTime += Time.deltaTime;
         if (gameTime > gameTimeLimit)
         {
@@ -52,6 +54,18 @@ public class GameManager : MonoBehaviour
             exp = 0;
             // Level up logic here, e.g., increase player stats
         }
+    }
+
+    public void Stop()
+    {
+        isLive = false;
+        Time.timeScale = 0f;
+    }
+
+    public void Resume()
+    {
+        isLive = true;
+        Time.timeScale = 1f;
     }
 
     public void SpawnExpOrb(Vector3 position, int expValue = 1)

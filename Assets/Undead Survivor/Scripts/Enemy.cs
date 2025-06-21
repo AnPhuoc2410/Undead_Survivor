@@ -27,6 +27,8 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!GameManager.instance.isLive) return; // Check if the game is live
+
         if (!isLive || animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
 
@@ -38,6 +40,9 @@ public class Enemy : MonoBehaviour
 
     void LateUpdate()
     {
+        if (!GameManager.instance.isLive) return; // Check if the game is live
+        if (!isLive)
+            return;
         spriter.flipX = target.position.x < rb.position.x;
     }
     void OnEnable()

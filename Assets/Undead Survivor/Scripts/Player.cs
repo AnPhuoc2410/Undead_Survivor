@@ -3,20 +3,14 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    [Header("Movement Settings")]
-    public float speed = 5f;
-    public float pixelsPerUnit = 18f;
-
-    [Header("References")]
-    public Scanner scanner;
-
+    public float speed = 5f; // Movement speed
     public Vector2 input;
+
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
-    private float UnitsPerPixel => 1f / pixelsPerUnit;
 
-    private Vector2 targetPosition;
+    public Scanner scanner;
 
     void Awake()
     {
@@ -24,35 +18,28 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
-
-        // Initialize target position
-        targetPosition = rb.position;
     }
 
     void Update()
     {
+        if (!GameManager.instance.isLive) return; // Check if the game is live
+        // Animate based on movement
         animator.SetFloat("Speed", input.magnitude);
 
+        // Flip sprite based on direction
         if (input.x != 0f)
-            spriteRenderer.flipX = input.x < 0;
+            spriteRenderer.flipX = input.x < 0; //true if moving left 
     }
 
     void FixedUpdate()
     {
-        if (input.magnitude > 0f)
-        {
-            Vector2 moveDirection = input.normalized;
-            Vector2 desiredMovement = speed * Time.fixedDeltaTime * moveDirection;
-            targetPosition += desiredMovement;
+        if (!GameManager.instance.isLive) return; // Check if the game is live
 
-            Vector2 snappedPosition;
-            snappedPosition.x = Mathf.Round(targetPosition.x / UnitsPerPixel) * UnitsPerPixel;
-            snappedPosition.y = Mathf.Round(targetPosition.y / UnitsPerPixel) * UnitsPerPixel;
+        Vector2 moveDirection = input.normalized;
+        Vector2 desiredMovement = speed * Time.fixedDeltaTime * moveDirection;
+        Vector2 newPos = rb.position + desiredMovement;
 
-            rb.MovePosition(snappedPosition);
-
-            targetPosition = snappedPosition;
-        }
+        rb.MovePosition(newPos);
     }
 
     void OnMove(InputValue inputValue)
