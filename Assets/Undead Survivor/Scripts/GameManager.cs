@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,8 +10,8 @@ public class GameManager : MonoBehaviour
     public float gameTime;
     public float gameTimeLimit = 60f; // 1 minute
     [Header("Player Settings")]
-    public int health;
-    public int maxHealth = 100;
+    public float health;
+    public float maxHealth = 100;
     public int level = 1;
     public int kill;
     public int exp;
@@ -20,27 +22,68 @@ public class GameManager : MonoBehaviour
     [Header("Orb Settings")]
     public int expOrbPrefabIndex = 3;
 
+    public Result uiResult;
+    public GameObject enemyCleaner;
+
     void Awake()
     {
         instance = this;
     }
-    void Start()
+    public void GameStart()
     {
         health = maxHealth;
+        isLive = true;
+        Resume();
+    }
+    public void GameOver()
+    {
+        StartCoroutine(GameOverRoutine());
+    }
+    IEnumerator GameOverRoutine()
+    {
+        isLive = false;
+
+        yield return new WaitForSeconds(1f);
+
+        uiResult.gameObject.SetActive(true);
+        uiResult.Lose();
+        Stop();
+    }
+    public void GameVictory()
+    {
+        StartCoroutine(GameVictoryRoutine());
+    }
+    IEnumerator GameVictoryRoutine()
+    {
+        isLive = false;
+        enemyCleaner.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
+
+        uiResult.gameObject.SetActive(true);
+        uiResult.Win();
+        Stop();
+    }
+    public void GameRetry()
+    {
+        SceneManager.LoadScene(0);
     }
 
     void Update()
     {
-        if (!isLive) return; 
+        if (!isLive) return;
         gameTime += Time.deltaTime;
         if (gameTime > gameTimeLimit)
         {
             gameTime = gameTimeLimit;
+            GameVictory();
         }
     }
 
     public void GetExp()
     {
+        if (!isLive) return;
+
         GetExp(1); // Default to 1 exp
     }
 
@@ -59,13 +102,13 @@ public class GameManager : MonoBehaviour
     public void Stop()
     {
         isLive = false;
-        Time.timeScale = 0f;
+        Time.timeScale = 0;
     }
 
     public void Resume()
     {
         isLive = true;
-        Time.timeScale = 1f;
+        Time.timeScale = 1;
     }
 
     public void SpawnExpOrb(Vector3 position, int expValue = 1)
