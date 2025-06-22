@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private Animator animator;
 
     public Scanner scanner;
+    public RuntimeAnimatorController[] animCon;
 
     void Awake()
     {
@@ -18,6 +19,12 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
+    }
+
+    void OnEnable()
+    {
+        speed *= CharacterTrait.Speed;
+        animator.runtimeAnimatorController = animCon[GameManager.instance.playerIndex];
     }
 
     void Update()

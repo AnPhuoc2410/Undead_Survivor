@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public float gameTime;
     public float gameTimeLimit = 60f; // 1 minute
     [Header("Player Settings")]
+    public int playerIndex = 0;
     public float health;
     public float maxHealth = 100;
     public int level = 1;
@@ -21,7 +22,7 @@ public class GameManager : MonoBehaviour
     public PoolManager poolManager;
     [Header("Orb Settings")]
     public int expOrbPrefabIndex = 3;
-
+    [Header("UI Settings")]
     public Result uiResult;
     public GameObject enemyCleaner;
 
@@ -29,9 +30,12 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
     }
-    public void GameStart()
+    public void GameStart(int id)
     {
+        playerIndex = id;
         health = maxHealth;
+
+        player.gameObject.SetActive(true);
         isLive = true;
         Resume();
     }
