@@ -12,5 +12,4 @@ public class Result : MonoBehaviour
     {
         titles[1].SetActive(true);
     }
-
 }
