@@ -25,8 +25,6 @@ public class GameManager : MonoBehaviour
     [Header("UI Settings")]
     public Result uiResult;
     public GameObject enemyCleaner;
-
-    private Weapon weapons;
     void Awake()
     {
         instance = this;
@@ -101,12 +99,12 @@ public class GameManager : MonoBehaviour
 
         GetExp(1); // Default to 1 exp
     }
-
     public void GetExp(int expAmount)
     {
         exp += expAmount;
 
-        if (exp >= nextExp[level - 1])
+        // Check if we haven't reached max level yet
+        if (level <= nextExp.Length && exp >= nextExp[level - 1])
         {
             level++;
             exp = 0;

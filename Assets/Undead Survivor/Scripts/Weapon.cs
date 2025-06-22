@@ -12,6 +12,8 @@ public class Weapon : MonoBehaviour
 
     float timer;
     Player player;
+    private float cycleTimer;
+    private bool isWeaponActive;
 
     void Awake()
     {
@@ -21,6 +23,7 @@ public class Weapon : MonoBehaviour
     {
         Init();
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -29,7 +32,30 @@ public class Weapon : MonoBehaviour
         switch (id)
         {
             case 0:
-                transform.Rotate(speed * Time.deltaTime * Vector3.back);
+                // Simple cycling: 3 seconds on, 2 seconds off
+                cycleTimer += Time.deltaTime;
+
+                if (cycleTimer < 3f) // Active for 3 seconds
+                {
+                    transform.Rotate(speed * Time.deltaTime * Vector3.back);
+                    if (!isWeaponActive)
+                    {
+                        isWeaponActive = true;
+                        SetWeaponVisibility(true);
+                    }
+                }
+                else if (cycleTimer < 5f) // Inactive for 2 seconds (3+2=5 total)
+                {
+                    if (isWeaponActive)
+                    {
+                        isWeaponActive = false;
+                        SetWeaponVisibility(false);
+                    }
+                }
+                else
+                {
+                    cycleTimer = 0f; // Reset cycle
+                }
                 break;
             default:
                 timer += Time.deltaTime;
@@ -42,21 +68,28 @@ public class Weapon : MonoBehaviour
                 break;
         }
     }
-
     public void LevelUp(float damage, int count)
     {
         this.damage = damage;
         this.count += count;
 
-        if (id == 0) Batch();
+        if (id == 0)
+        {
+            Batch();
+            // Reset the cycle to start fresh after upgrade
+            cycleTimer = 0f;
+            isWeaponActive = true;
+            SetWeaponVisibility(true);
+        }
     }
-
     public void Init()
     {
         switch (id)
         {
             case 0:
                 speed = 150 * CharacterTrait.WeaponSpeed;
+                cycleTimer = 0f;
+                isWeaponActive = true;
                 Batch();
                 break;
             default:
@@ -107,10 +140,17 @@ public class Weapon : MonoBehaviour
             Vector3 rotateVec = 360 * i * Vector3.forward / count;
             bullet.Rotate(rotateVec);
             bullet.Translate(Vector3.up * 1.5f, Space.Self);
-
             bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); //-100 is infinity
+        }
+    }
 
-
+    void SetWeaponVisibility(bool isVisible)
+    {
+        // Toggle visibility of all child bullets for Case 0 weapon
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform bullet = transform.GetChild(i);
+            bullet.gameObject.SetActive(isVisible);
         }
     }
 }

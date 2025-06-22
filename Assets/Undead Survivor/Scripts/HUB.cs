@@ -17,13 +17,21 @@ public class HUB : MonoBehaviour
         slider = GetComponent<Slider>();
     }
     void LateUpdate()
-    {
-        switch (infoType)
+    {        switch (infoType)
         {
             case InfoType.Exp:
                 float currExp = GameManager.instance.exp;
-                float maxExp = GameManager.instance.nextExp[GameManager.instance.level];
-                slider.value = currExp / maxExp;
+                int currentLevel = GameManager.instance.level;
+                // Check if we're at max level or beyond the array bounds
+                if (currentLevel >= GameManager.instance.nextExp.Length)
+                {
+                    slider.value = 1f; // Max level reached, fill the bar
+                }
+                else
+                {
+                    float maxExp = GameManager.instance.nextExp[currentLevel];
+                    slider.value = currExp / maxExp;
+                }
                 break;
             case InfoType.Level:
                 text.text = "Lv." + GameManager.instance.level.ToString();
