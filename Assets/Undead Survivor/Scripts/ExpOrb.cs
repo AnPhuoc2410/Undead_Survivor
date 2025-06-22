@@ -4,7 +4,7 @@ public class ExpOrb : MonoBehaviour
 {
     public int expValue = 1;
     public float moveSpeed = 3f;
-    public float magnetRange = 2f;
+    public float magnetRange = 3f;
     
     private Transform player;
     private bool isCollected = false;
@@ -32,7 +32,7 @@ public class ExpOrb : MonoBehaviour
         if (distanceToPlayer <= magnetRange)
         {
             Vector2 direction = (player.position - transform.position).normalized;
-            rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
+            rb.MovePosition(rb.position + moveSpeed * Time.fixedDeltaTime * direction);
         }
     }
     
@@ -41,6 +41,7 @@ public class ExpOrb : MonoBehaviour
         if (collision.CompareTag("Player") && !isCollected)
         {
             isCollected = true;
+            expValue += Mathf.FloorToInt(GameManager.instance.gameTime * 0.3f);
             GameManager.instance.GetExp(expValue);
             gameObject.SetActive(false);
         }

@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour
 
         //rb.AddForce(dir * 10f, ForceMode2D.Impulse); // TEST
 
-        if(per > -1)
+        if(per >= 0)
         {
             rb.linearVelocity = dir * 15f; // * 15f
         }
@@ -27,16 +27,23 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy") || per == -1) return;
+        if (!collision.CompareTag("Enemy") || per == -100) return;
 
         per--;
 
-        if(per == -1)
+        if(per < 0)
         {
             rb.linearVelocity = Vector2.zero;
             gameObject.SetActive(false);
         }
 
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Area") || per == -100) return;
+
+        gameObject.SetActive(false);
     }
 
 

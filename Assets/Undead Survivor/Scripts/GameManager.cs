@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public Result uiResult;
     public GameObject enemyCleaner;
 
+    private Weapon weapons;
     void Awake()
     {
         instance = this;
