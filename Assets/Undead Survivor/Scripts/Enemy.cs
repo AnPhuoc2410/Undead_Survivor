@@ -71,12 +71,13 @@ public class Enemy : MonoBehaviour
         if (!collision.CompareTag("Bullet") || !isLive) return;
 
         Bullet bullet = collision.GetComponent<Bullet>();
-        health -= bullet.damage;
+        health -= bullet.damage * CharacterTrait.Damage;
         StartCoroutine(KnockBack());
 
         if (health > 0)
         {
             animator.SetTrigger("Hit");
+            AudioManager.instance.PlaySFX(SFX.Hit);
         }
         else
         {
@@ -87,6 +88,8 @@ public class Enemy : MonoBehaviour
             animator.SetBool("Dead", true);
             GameManager.instance.kill++;
             GameManager.instance.SpawnExpOrb(transform.position);
+
+           if (GameManager.instance.isLive) AudioManager.instance.PlaySFX(SFX.Dead);
         }
     }
 

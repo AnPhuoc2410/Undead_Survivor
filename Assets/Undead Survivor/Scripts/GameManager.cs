@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour
         player.gameObject.SetActive(true);
         isLive = true;
         Resume();
+
+        AudioManager.instance.PlayBGM(true);
+        AudioManager.instance.PlaySFX(SFX.Select);
     }
     public void GameOver()
     {
@@ -53,6 +56,9 @@ public class GameManager : MonoBehaviour
         uiResult.gameObject.SetActive(true);
         uiResult.Lose();
         Stop();
+
+        AudioManager.instance.PlayBGM(false);
+        AudioManager.instance.PlaySFX(SFX.Lose);
     }
     public void GameVictory()
     {
@@ -68,6 +74,9 @@ public class GameManager : MonoBehaviour
         uiResult.gameObject.SetActive(true);
         uiResult.Win();
         Stop();
+
+        AudioManager.instance.PlayBGM(false);
+        AudioManager.instance.PlaySFX(SFX.Win);
     }
     public void GameRetry()
     {
@@ -100,7 +109,8 @@ public class GameManager : MonoBehaviour
         {
             level++;
             exp = 0;
-            // Level up logic here, e.g., increase player stats
+
+            AudioManager.instance.PlaySFX(SFX.LevelUp);
         }
     }
 
