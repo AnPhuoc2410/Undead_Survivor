@@ -38,7 +38,6 @@ public class GameManager : MonoBehaviour
         isLive = true;
         Resume();
 
-        AudioManager.instance.PlayBGM(true);
         AudioManager.instance.PlaySFX(SFX.Select);
     }
     public void GameOver()

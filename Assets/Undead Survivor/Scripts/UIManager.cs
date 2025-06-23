@@ -8,53 +8,49 @@ public class UIManager : MonoBehaviour
     public GameObject howToPlayPanel;
     public GameObject mainMenuPanel;
 
-    
+
     [Header("Audio")]
     public bool enableSFX = true;
 
     void Start()
     {
-        // Ensure main menu is visible and other panels are hidden on start
-        if (mainMenuPanel != null)
-            mainMenuPanel.SetActive(true);
-        if (settingsPanel != null)
-            settingsPanel.SetActive(false);
-        if (howToPlayPanel != null)
-            howToPlayPanel.SetActive(false);
+        AudioManager.instance.PlayBGM(true);
+        ShowPanel(mainMenuPanel);
+    }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (settingsPanel.activeSelf || howToPlayPanel.activeSelf)
+                OnBackClick(); // Back to main menu
+            else if (mainMenuPanel.activeSelf)
+                OnExitClick(); // Exit from main menu
+        }
     }
 
     // Settings button click handler
     public void OnSettingsClick()
     {
         PlaySelectSFX();
-        
-        if (settingsPanel != null)
-        {
-            settingsPanel.SetActive(true);
-            if (mainMenuPanel != null)
-                mainMenuPanel.SetActive(false);
-        }
+        ShowPanel(settingsPanel);
+
+
     }
+
 
     // How To Play button click handler
     public void OnHowToPlayClick()
     {
         PlaySelectSFX();
-        
-        if (howToPlayPanel != null)
-        {
-            howToPlayPanel.SetActive(true);
-            if (mainMenuPanel != null)
-                mainMenuPanel.SetActive(false);
-        }
+        ShowPanel(howToPlayPanel);
     }
 
     // Exit button click handler
     public void OnExitClick()
     {
         PlaySelectSFX();
-        
+
         // Add a small delay to let the SFX play before exiting
         StartCoroutine(ExitWithDelay());
     }
@@ -63,35 +59,21 @@ public class UIManager : MonoBehaviour
     public void OnBackClick()
     {
         PlaySelectSFX();
-        
-        if (mainMenuPanel != null)
-            mainMenuPanel.SetActive(true);
-        if (settingsPanel != null)
-            settingsPanel.SetActive(false);
-        if (howToPlayPanel != null)
-            howToPlayPanel.SetActive(false);
+        ShowPanel(mainMenuPanel);
     }
 
     // Close settings panel
     public void OnCloseSettings()
     {
         PlaySelectSFX();
-        
-        if (settingsPanel != null)
-            settingsPanel.SetActive(false);
-        if (mainMenuPanel != null)
-            mainMenuPanel.SetActive(true);
+        ShowPanel(mainMenuPanel);
     }
 
     // Close how to play panel
     public void OnCloseHowToPlay()
     {
         PlaySelectSFX();
-        
-        if (howToPlayPanel != null)
-            howToPlayPanel.SetActive(false);
-        if (mainMenuPanel != null)
-            mainMenuPanel.SetActive(true);
+        ShowPanel(mainMenuPanel);
     }
 
     // Play Select SFX if enabled and AudioManager exists
@@ -103,14 +85,24 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void ShowPanel(GameObject panelToShow)
+    {
+        if (mainMenuPanel != null)
+            mainMenuPanel.SetActive(panelToShow == mainMenuPanel);
+        if (settingsPanel != null)
+            settingsPanel.SetActive(panelToShow == settingsPanel);
+        if (howToPlayPanel != null)
+            howToPlayPanel.SetActive(panelToShow == howToPlayPanel);
+    }
+
     private System.Collections.IEnumerator ExitWithDelay()
     {
-        yield return new WaitForSeconds(0.1f); // Small delay to let SFX play
-        
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
+        yield return new WaitForSeconds(0.5f); // Small delay to let SFX play
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
             Application.Quit();
-        #endif
+#endif
     }
-} 
+}
