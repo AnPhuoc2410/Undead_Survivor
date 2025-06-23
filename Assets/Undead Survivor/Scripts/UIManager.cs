@@ -23,13 +23,12 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (settingsPanel.activeSelf || howToPlayPanel.activeSelf)
-                OnBackClick(); // Back to main menu
+                OnBackClick();
             else if (mainMenuPanel.activeSelf)
-                OnExitClick(); // Exit from main menu
+                OnExitClick();
         }
     }
 
-    // Settings button click handler
     public void OnSettingsClick()
     {
         PlaySelectSFX();
@@ -38,15 +37,12 @@ public class UIManager : MonoBehaviour
 
     }
 
-
-    // How To Play button click handler
     public void OnHowToPlayClick()
     {
         PlaySelectSFX();
         ShowPanel(howToPlayPanel);
     }
 
-    // Exit button click handler
     public void OnExitClick()
     {
         PlaySelectSFX();
@@ -55,28 +51,24 @@ public class UIManager : MonoBehaviour
         StartCoroutine(ExitWithDelay());
     }
 
-    // Back button handler (to return to main menu)
     public void OnBackClick()
     {
         PlaySelectSFX();
         ShowPanel(mainMenuPanel);
     }
 
-    // Close settings panel
     public void OnCloseSettings()
     {
         PlaySelectSFX();
         ShowPanel(mainMenuPanel);
     }
 
-    // Close how to play panel
     public void OnCloseHowToPlay()
     {
         PlaySelectSFX();
         ShowPanel(mainMenuPanel);
     }
 
-    // Play Select SFX if enabled and AudioManager exists
     private void PlaySelectSFX()
     {
         if (enableSFX && AudioManager.instance != null)

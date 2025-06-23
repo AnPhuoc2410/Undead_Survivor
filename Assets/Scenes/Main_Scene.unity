@@ -6111,7 +6111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLive: 0
   gameTime: 0
-  gameTimeLimit: 20
+  gameTimeLimit: 60
   playerIndex: 0
   health: 0
   maxHealth: 100

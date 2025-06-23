@@ -27,12 +27,11 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GameManager.instance.isLive) return; // Check if the game is live
+        if (!GameManager.instance.isLive) return;
 
         switch (id)
         {
             case 0:
-                // Simple cycling: 3 seconds on, 2 seconds off
                 cycleTimer += Time.deltaTime;
 
                 if (cycleTimer < 3f) // Active for 3 seconds
