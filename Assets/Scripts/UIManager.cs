@@ -102,12 +102,16 @@ public class UIManager : MonoBehaviour
 
     private System.Collections.IEnumerator ExitWithDelay()
     {
-        yield return new WaitForSeconds(0.5f); // Small delay to let SFX play
+        Debug.Log("ExitWithDelay started");
+        yield return new WaitForSecondsRealtime(0.5f); // Use realtime to avoid timescale issues
 
 #if UNITY_EDITOR
+        Debug.Log("Exiting play mode in editor");
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit();
+    Debug.Log("Quitting application");
+    Application.Quit();
 #endif
     }
+
 }
