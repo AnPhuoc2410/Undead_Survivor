@@ -29,9 +29,10 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
     }
-    public void GameStart(int id)
+    public void Start()
     {
-        playerIndex = id;
+        AudioManager.instance.PlayBGM(true);
+        playerIndex = GameData.instance.playerIndex;
         health = maxHealth;
 
         player.gameObject.SetActive(true);

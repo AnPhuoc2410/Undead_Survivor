@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
     public GameObject settingsPanel;
     public GameObject howToPlayPanel;
     public GameObject mainMenuPanel;
+    public GameObject exitConfirmationPanel;
 
 
     [Header("Audio")]
@@ -46,9 +47,19 @@ public class UIManager : MonoBehaviour
     public void OnExitClick()
     {
         PlaySelectSFX();
+        ShowPanel(exitConfirmationPanel);
+    }
 
-        // Add a small delay to let the SFX play before exiting
+    public void OnExitYes()
+    {
+        PlaySelectSFX();
         StartCoroutine(ExitWithDelay());
+    }
+
+    public void OnExitNo()
+    {
+        PlaySelectSFX();
+        ShowPanel(mainMenuPanel);
     }
 
     public void OnBackClick()
@@ -85,6 +96,8 @@ public class UIManager : MonoBehaviour
             settingsPanel.SetActive(panelToShow == settingsPanel);
         if (howToPlayPanel != null)
             howToPlayPanel.SetActive(panelToShow == howToPlayPanel);
+        if (exitConfirmationPanel != null)
+            exitConfirmationPanel.SetActive(panelToShow == exitConfirmationPanel);
     }
 
     private System.Collections.IEnumerator ExitWithDelay()
@@ -94,7 +107,7 @@ public class UIManager : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-            Application.Quit();
+        Application.Quit();
 #endif
     }
 }
